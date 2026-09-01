@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04. duration, ease, delay</title>
+    <style>
+        body {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background: #f4f1ec;
+          gap: 16px;
+        }
+        .row {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+        .label {
+          width: 160px;
+          font-family: monospace;
+          font-size: 14px;
+          text-align: right;
+        }
+        .box {
+          width: 60px;
+          height: 60px;
+          background: #e07a5f;
+          border-radius: 8px;
+        }
+        button {
+          margin-top: 20px;
+          padding: 10px 20px;
+          cursor: pointer;
+        }
+      </style>
+</head>
+<body>
+    
+    <div class="row"><span class="label">power1.out</span><div class="box" id="box1"></div></div>
+    <div class="row"><span class="label">power2.out</span><div class="box" id="box2"></div></div>
+    <div class="row"><span class="label">power4.out</span><div class="box" id="box3"></div></div>
+    <div class="row"><span class="label">none (등속)</span><div class="box" id="box4"></div></div>
+    <div class="row"><span class="label">back.out(1.7)</span><div class="box" id="box5"></div></div>
+    <div class="row"><span class="label">bounce.out</span><div class="box" id="box6"></div></div>
+
+    <button id="playBtn">다시 재생</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script>
+
+        function playAll() {
+            //재생하기 전에 모두 원위치로 리셋함.
+            gsap.set(".box", { x: 0 }); //gsap.set() : 즉시 값을 지정하는 메서드. 애니메이션 없이 즉시 x:0으로
+
+            gsap.to("#box1", { x: 400, duration: 1.5, ease: "power1.out", delay: 0 });
+            gsap.to("#box2", { x: 400, duration: 1.5, ease: "power2.out", delay: 1 });
+            gsap.to("#box3", { x: 400, duration: 1.5, ease: "power4.out", delay: 2 });
+            gsap.to("#box4", { x: 400, duration: 1.5, ease: "none", delay: 0.5 });
+            gsap.to("#box5", { x: 400, duration: 1.5, ease: "back.out(1.7)", delay: 0.2 });
+            gsap.to("#box6", { x: 400, duration: 1.5, ease: "bounce.out", delay: 2.3 });
+
+
+            // power1 -> power4으로 숫자가 커질수록 감속이 급격해진다.
+            // back.out : 도착 지점을 살짝 지났다가 되돌아옴
+            // bounce.out : 마지막에 통통 튀는 느낌
+
+            // ease: "back.out(1)"    // 기본값에 가까움, 살짝만 튕김
+            // ease: "back.out(1.7)"  // GSAP 기본 설정값, 적당히 튕김 (가장 흔히 씀)
+            // ease: "back.out(3)"    // 훨씬 크게 지나쳤다가 돌아옴, 과장된 느낌
+            // ease: "back.out(0)"    // 거의 안 튕김, back 효과가 없어짐 (일반 감속과 비슷)
+        }
+
+        playAll(); // 페이지 로드 시 자동 재생
+        document.getElementById("playBtn").addEventListener('click', playAll);
+
+    </script>
+</body>
+</html>

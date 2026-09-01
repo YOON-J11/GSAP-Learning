@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05. stagger</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f1ec;
+            gap: 30px;
+        }
+
+        .card-wrap {
+            display: flex;
+            gap: 16px;
+        }
+
+        .card {
+            width: 100px;
+            height: 140px;
+            background: #e07a5f;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="card-wrap">
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+    </div>
+
+    <button id="playBtn">카드 등장시키기</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script>
+
+        /*
+            stagger란 : 여러 요소를 애니메이션시킬 때, 각 요소가 일정한 간격을 두고 순차적으로 시작하도록 자동으로 지연시간을 줘서 "하나씩 순서대로"나타ㅏ게 만드는 옵션이다.
+        */
+
+        function playCards() {
+            // 재생 전 초기 상태로 리셋
+            gsap.set(".card", { y: 50, opacity: 0 });
+
+            gsap.to(".card", {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "back.out(1.7)",
+                stagger: 0.1,   // 카드마다 0.1초씩 순차적으로 재생됨
+            })
+        }
+
+
+        document.getElementById("playBtn").addEventListener("click", playCards);
+
+
+
+    </script>
+</body>
+
+</html>
