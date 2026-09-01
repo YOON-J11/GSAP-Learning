@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. Timeline 안에 stagger</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f1ec;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .menu {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            font-size: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="logo">LOGO</div>
+    <ul class="menu">
+        <li>HOME</li>
+        <li>ABOUT</li>
+        <li>WORK</li>
+        <li>CONTACT</li>
+    </ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script>
+
+        const tl = gsap.timeline();
+
+        tl.to(".logo", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
+            .to(".menu li", {
+                opacity: 1, y: 0, duration: 0.5, ease: "power2.out",
+                stagger: {
+                    each: 0.15, //숫자만 썼던 stagger: 0.15랑 같은 역할. 각 요소 사이의 간격(초)를 정한다.
+                    from: "random", //어디서부터 시작해서 순서를 매길지 정하는 옵션. 기본값은 "start"
+                    // from: "start" (기본값) : 순서대로
+                    // from : "end" : 역순으로
+                    // from : "center" : 가운데 요소부터 시작해서 양옆으로 동시에 퍼지며 진행
+                    // from: "edges" : 양끝에서 시작해서 가운데로 모이며 진행 (center의 반대)
+                    // from: "random" : 무작위 순서
+                }
+            }, "-=0.2");  // 세 번째 인자 "-=0.2"로 logo 애니메이션이 끝나기 0.2초 전에 시작
+
+    </script>
+</body>
+
+</html>

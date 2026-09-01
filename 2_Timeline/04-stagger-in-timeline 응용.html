@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. Timeline 안에 stagger</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f1ec;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .menu {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            font-size: 16px;
+            opacity: 0;
+        }
+
+        /* 가운데(menu)는 아래에서 위로 */
+        .menu li.center {
+            transform: translateY(20px);
+        }
+
+        /* 나머지는 처음엔 가운데(x:0)에 몰려있다가 양옆으로 퍼짐 */
+        .menu li:not(.center) {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="logo">LOGO</div>
+    <ul class="menu">
+        <li class="side">HOME</li>
+        <li class="side">ABOUT</li>
+        <li class="center">MENU</li>
+        <li class="side">WORK</li>
+        <li class="side">CONTACT</li>
+    </ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script>
+
+        const tl = gsap.timeline();
+
+        tl.to(".logo", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
+            .to(".menu li.center", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", }, "-=0.2") //가운데 메뉴만 아래에서 위로
+            .fromTo(".menu li.side", { x: 0 }, // 시작: 가운데 위치(x:0)에서
+                {
+                    opacity: 1,
+                    x: (index, target) => {
+                        // HOME, ABOUT은 왼쪽으로, WORK, CONTACT는 오른쪽으로
+                        const items = gsap.utils.toArray(".menu li.side");
+                        const position = items.indexOf(target);
+                        const center = (items.length - 1) / 2;
+                        return (position - center) * 40; // 중심에서 얼마나 떨어졌는지에 비례해 이동
+                    },
+                    duration: 0.6,
+                    ease: "power2.out",
+                    stagger: {
+                        each: 0.02,
+                        from: "center", // 가운데(ABOUT/WORK)부터 시작해서 바깥으로 퍼짐
+                    },
+                })
+
+    </script>
+</body>
+
+</html>
