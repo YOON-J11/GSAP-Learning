@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01. ScrollTrigger 기본</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f4f1ec;
+            font-family: sans-serif;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            background: #3a7d44;
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .spacer {
+            height: 100vh;
+            /* 스크롤할 여유 공간 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="spacer">아래로 스크롤 해보세요 ↓</section>
+
+    <section>
+        <div class="box"></div>
+    </section>
+
+    <section class="spacer">스크롤 끝</section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <!-- ScrollTrigger 플러그인 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".box", {
+            opacity: 1,
+            y: 0,
+            ease: "power2.out",
+            scrollTrigger: {   // scrollTrigger 옵션이 있으면 페이지로드하자마자 실행x, 스크롤이 특정 지점에 도달하면 실행한다.
+                trigger: ".box", // 어떤 요소를 기준으로 스크롤을 감지할지
+                start: "top 80%", // box의 top이 화면(viewport)의 80%지점에 닿으면 시작한다
+                end: "bottom 20%", // 애니메이션이 언제끝날지를 정함 (박스의 아래가 화면 20%지점에 닿을때까지)
+                scrub: true,
+
+                /*
+                    자주 쓰는 값
+                    start: "top bottom"  // trigger의 top이 화면 맨 아래에 닿으면 (요소가 막 보이기 시작할 때)
+                    start: "top center"  // trigger의 top이 화면 정중앙에 오면
+                    start: "top top"     // trigger의 top이 화면 맨 위에 닿으면
+                */
+            },
+        });
+
+    </script>
+</body>
+
+</html>

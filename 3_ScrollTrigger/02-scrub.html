@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02. scrub</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f4f1ec;
+            font-family: sans-serif;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            background: #3a7d44;
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .spacer {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="spacer">아래로 스크롤 해보세요 ↓</section>
+
+    <section>
+        <div class="box"></div>
+    </section>
+
+    <section class="spacer">스크롤 끝</section>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+    <script>
+        /*
+            scrub: 애니메이션이 스크롤하 만큼만 진행되도록 스크롤 위치와 애니메이션을 실시간으로 붙여주는 옵션 (스크롤=재생컨트롤러가 되는 셈)
+        */
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".box", {
+            opacity: 1,
+            y: 0,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".box", // .box를 기준으로 스크롤을 감지한다
+                start: "top 80%", // .box의 top이 화면(viewport)의 80%지점에 닿으면 시작한다
+                end: "bottom 20%", // .box의 bottom이 화면의 20% 지점에 닿으면 끝난다
+                scrub: true,
+                markers: true, // 눈금자 역할. 내가 원하는 지점이 맞는지 확인할때 켜두기
+            }
+        })
+    </script>
+</body>
+
+</html>

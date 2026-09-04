@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01. 텍스트 마스크 리빌 (글자+문장 조합)</title>
+    <style>
+        body {
+            margin: 0;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* 1번째 줄: 글자 단위 */
+        .line1 {
+            overflow: hidden;
+            display: flex;
+        }
+
+        .line1 .char {
+            display: inline-block;
+            font-size: 70px;
+            font-weight: 800;
+            color: white;
+            transform: translateY(100%);
+        }
+
+        /* 공백은 너비만 주고 보이지 않게 처리 */
+        .line1 .char.space {
+            width: 20px;
+        }
+
+        /* 2, 3번째 줄: 문장 단위 */
+        .line2,
+        .line3 {
+            overflow: hidden;
+        }
+
+        .line2 span,
+        .line3 span {
+            display: block;
+            transform: translateY(100%);
+        }
+
+        .line2 span {
+            font-size: 28px;
+            color: #ccc;
+        }
+
+        .line3 span {
+            font-size: 18px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero">
+        <h1 class="line1">HELLO, I'M YOON</h1>
+        <div class="line2"><span>Frontend Publisher</span></div>
+        <div class="line3"><span>디자인을 코드로 옮기는 사람입니다</span></div>
+    </div>
+
+    <!-- 로컬 GSAP 파일 불러오기 -->
+    <script src="./gsap.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>

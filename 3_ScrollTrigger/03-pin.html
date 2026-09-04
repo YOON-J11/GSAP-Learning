@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. pin</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f4f1ec;
+            font-family: sans-serif;
+        }
+
+        .spacer {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+
+        .pin-section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #3a7d44;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pin-section h2 {
+            color: white;
+            font-size: 60px;
+            position: absolute;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="spacer">스크롤 해보세요 ↓</section>
+
+    <section class="pin-section">
+        <h2 class="text1">STEP 1. 시작</h2>
+        <h2 class="text2">STEP 2. 진행</h2>
+        <h2 class="text3">STEP 3. 완료</h2>
+    </section>
+
+    <section class="spacer">다음 섹션</section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+    <script>
+        /*
+            pin 이란 : 섹션이 화면에 고정된 채로 스크롤을 계속 해도 그 자리에 붙어있는 효과 (이미지는 고정되어이고 텍스트만 바뀌는 연출)
+         */
+        gsap.registerPlugin(ScrollTrigger);
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".pin-section", // .pin-section을 기준으로 스크롤을 감지
+                start: "top top",//pin-section 요소의 top이 화면의 맨위(0%)에 도달하는 순간 시작한다
+                end: "+=1500",//start지점을 기준으로 거기서 1500px만큼 더 내려간 지점에서 끝난다
+                pin: true, // 이 구간 동안 섹션 고정
+                scrub: true, // 스크롤과 실시간 연동
+                markers: true,
+            },
+        });
+
+        tl.to(".text1", { opacity: 1, duration: 1 })
+            .to(".text1", { opacity: 0, duration: 1 })
+            .to(".text2", { opacity: 1, duration: 1 })
+            .to(".text2", { opacity: 0, duration: 0 })
+            .to(".text3", { opacity: 1, duration: 1 });
+
+    </script>
+</body>
+
+</html>
