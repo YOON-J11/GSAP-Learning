@@ -60,12 +60,12 @@
 
         t1.to(".title", { opacity: 1, y: 1, duration: 1, ease: "power2.out" })
             .to(".subtitle", { opacity: 1, y: 0, ease: "power2.out" }, "-=0.6")  //이전 애니메이션이 끝나기 0.6초 전에 시작 (이전 애니메이션이랑 겹침)
-            .to(".cta", { opacity: 1, y: 1, duration: 1, ease: "power2.out" }, "<0.6") //이전 애니메이션이 끝나고 나서 0.6초 쉰 후 시작
+            .to(".cta", { opacity: 1, y: 1, duration: 1, ease: "power2.out" }, "<0.6")
 
             // "-=0.6"  이전 애니메이션이 끝나기 0.6초 전에 시작
             // "+=0.6"  이전 애니메이션이 끝난 후 0.6초 쉬고 시작
             // "<"      이전 애니메이션과 동시에 시작
-            // "<0.2"   이전 애니메이션이 시작한 시점 시준 0.6초 후
+            // "<0.6"   이전 애니메이션이 시작한 지점으로 부터 0.6초 뒤에 시작
 
     </script>
 </body>

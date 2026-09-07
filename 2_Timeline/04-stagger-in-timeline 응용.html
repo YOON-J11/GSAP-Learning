@@ -68,15 +68,18 @@
 
         tl.to(".logo", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
             .to(".menu li.center", { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", }, "-=0.2") //가운데 메뉴만 아래에서 위로
-            .fromTo(".menu li.side", { x: 0 }, // 시작: 가운데 위치(x:0)에서
+            .fromTo(".menu li.side", { x: 0 }, // 시작: li모두 가운데 위치(x:0)에서 시작한다
                 {
                     opacity: 1,
-                    x: (index, target) => {
-                        // HOME, ABOUT은 왼쪽으로, WORK, CONTACT는 오른쪽으로
+
+                    // 함수형 속성값 (x: (index, target))
+                    // gsap에 내장된 기능으로, 매개변수 index에는 순서번호, target에는 현재 애니메이션이 적용되고 있는 특정 HTML DOM 요소가 온다
+                    x: (index, target) => { //끝점 : 각자 계산된 위치 (x값)로 이동함 // HOME, ABOUT은 왼쪽으로, WORK, CONTACT는 오른쪽으로
                         const items = gsap.utils.toArray(".menu li.side");
-                        const position = items.indexOf(target);
-                        const center = (items.length - 1) / 2;
-                        return (position - center) * 40; // 중심에서 얼마나 떨어졌는지에 비례해 이동
+                        const center = (items.length - 1) / 2; //정중앙인 인덱스 번호를 구함. 여기서 정중앙은 1과 2 사이라 1.5 (인덱스는 0부터시작해서 1을 뺀다.)
+                        return (index - center) * 40; // 중심에서 얼마나 떨어졌는지에 비례해 이동
+                        //첫번째 li(HOME)는 index: 0. (0 - 1.5) * 40 = -60, 즉 x축으로 -60이동(왼쪽으로 60px이동)
+                        //두번째 li(ABOUT)은 -20, 세번째 20, 네번째 60 값이 들어간다.
                     },
                     duration: 0.6,
                     ease: "power2.out",
