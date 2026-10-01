@@ -1,16 +1,148 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>04. 패럴랙스</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: #f4f1ec;
+        }
+
+        .spacer {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+
+        /* 
+          전체를 감싸는 틀. 이전과 같은 이유로 
+          "스크롤 위치를 재는 고정된 기준"과 "움직이는 요소들"을 분리함.
+        */
+        .parallax-wrap {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            /* 각 층이 움직이다 밖으로 나가는 걸 잘라냄 */
+        }
+
+        /* 
+          1층: 배경(하늘). 가장 멀리 있는 것 = 가장 느리게 움직일 대상.
+          화면보다 크게(130%) 만들어서, 움직여도 빈틈이 안 보이게 여유를 둠.
+        */
+        .layer-sky {
+            position: absolute;
+            top: -15%;
+            left: 0;
+            width: 100%;
+            height: 130%;
+            background: linear-gradient(180deg, #ffd89b, #ff9a76, #6b5b95);
+        }
+
+        /* 
+          2층: 산 실루엣(SVG). 중간 거리 = 중간 속도로 움직일 대상.
+          화면 하단에 붙여두고, SVG 자체도 세로로 여유 공간을 좀 둠.
+        */
+        .layer-mountain {
+            position: absolute;
+            bottom: -10%;
+            /* 아래쪽에 붙이되, 움직일 여유를 위해 살짝 내려서 시작 */
+            left: 0;
+            width: 100%;
+        }
+
+        .layer-mountain svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* 
+          3층: 텍스트. 가장 가까운 것 = 가장 빠르게 움직일 대상.
+        */
+        .layer-text {
+            position: relative;
+            /* z-index를 적용하기 위해 필요 */
+            z-index: 2;
+            /* 세 층 중 제일 위에 쌓이게 */
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 60px;
+            font-weight: 800;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            /* 배경 위에서도 잘 보이게 그림자 */
+        }
+    </style>
 </head>
+
 <body>
-    
+
+    <section class="spacer">스크롤 해보세요 ↓</section>
+
+    <div class="parallax-wrap">
+        <!-- 1층: 하늘 배경 -->
+        <div class="layer-sky"></div>
+
+        <!-- 2층: 산 실루엣 (SVG로 직접 그린 산 모양) -->
+        <div class="layer-mountain">
+            <svg viewBox="0 0 1000 300" preserveAspectRatio="none">
+                <!-- 
+            polygon: 여러 개의 점을 직선으로 이어서 도형을 만드는 SVG 태그.
+            points에 "x,y x,y x,y..." 형태로 좌표를 나열하면
+            그 점들을 순서대로 이어서 산 모양이 만들어짐.
+            -->
+                <polygon points="0,300 0,150 200,50 400,180 600,80 800,200 1000,100 1000,300" fill="#3a3a5c" />
+            </svg>
+        </div>
+
+        <!-- 3층: 텍스트 -->
+        <div class="layer-text">ABOUT ME</div>
+    </div>
+
+    <section class="spacer">다음 섹션</section>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script>
-        
+        gsap.registerPlugin(ScrollTrigger);
+
+        /*
+          세 개 층을 배열로 묶어서 관리.
+          각 층마다 "얼마나 움직일지(speed)"만 다르게 지정하고,
+          나머지 로직(trigger, start, end 등)은 공통으로 재사용.
+          
+          이렇게 배열+forEach로 묶으면, 나중에 층을 하나 더 추가하고 싶을 때
+          배열에 한 줄만 추가하면 되니까 관리가 훨씬 편해짐.
+        */
+        const layers = [
+            { selector: ".layer-sky", speed: "-20%" },       // 제일 느리게 (멀리 있으니까)
+            { selector: ".layer-mountain", speed: "-40%" },   // 중간 속도
+            { selector: ".layer-text", speed: "-75%" },        // 제일 빠르게 (가까이 있으니까)
+        ];
+
+        // 배열을 순회하면서, 각 층마다 다른 속도로 애니메이션을 건다.
+        layers.forEach((layer) => {
+            gsap.to(layer.selector, {
+                y: layer.speed, // 층마다 미리 정해둔 속도값 적용
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".parallax-wrap", // 세 층 모두 같은 섹션을 기준으로 감지
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                    markers: true, // 디버깅용, 완성되면 지우기
+                },
+            });
+        });
     </script>
 </body>
+
 </html>
